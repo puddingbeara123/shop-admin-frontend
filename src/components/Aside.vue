@@ -6,7 +6,7 @@
   <el-menu
     default-active="1-1"
     class="el-menu-vertical-demo"
-    :collapse="isCollapse"
+    :collapse="isCollapse" 
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
@@ -20,7 +20,7 @@
         <el-menu-item
           v-for="(subItem, subIndex) in item.group"
           :key="subIndex"
-          :index="`${index + 1}-${subItem + 1}`"
+          :index="`${index + 1}-${subIndex + 1}`"
         >
           <router-link :to="subItem.src">{{subItem.title}}</router-link>
         </el-menu-item>
@@ -38,23 +38,22 @@ export default {
         {
           icon: "el-icon-menu",
           title: "购物商场",
-          group: [{ src: "#", title: "商品管理" }, { src: "#", title: "栏目管理" }]
+          group: [{ src: "/admin/goods-list", title: "商品管理" }, { src: "/admin/category-list", title: "栏目管理" }]
         },
         {
           icon: "el-icon-service",
           title: "会员管理",
-          group: [{ src: "#", title: "会员列表" }]
+          group: [{ src: "/admin/category-list", title: "会员列表" }]
         },
         {
-          icon: "el-icon-service",
+          icon: "el-icon-goods",
           title: "订单管理",
           group: [{ src: "#", title: "订单列表" }]
         }
       ]
-    },
-    props:["isCollapse"],
+    };
   },
- 
+  props: ["isCollapse"],
 };
 </script>
 <style>

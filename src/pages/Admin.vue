@@ -1,14 +1,20 @@
 <template>
   <div class="container">
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="auto">
         <!-- 3.调用组件 -->
         <div class="logo">Logo</div>
-        <app-aside></app-aside>
+        <!-- 插入侧边栏 -->
+        <app-aside :isCollapse="isCollapse" ></app-aside>
       </el-aside>
       <el-container>
-        <el-header>Header</el-header>
-        <el-main>Main</el-main>
+        <el-header>
+          <!-- 插入头部栏 -->
+          <app-header @onChange="changeCollapse"></app-header>
+        </el-header>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -17,12 +23,24 @@
 <script>
 // 引入组件
 import Aside from "../components/Aside";
+import Header from "../components/Header"
 // 原生h5标签有aside，不能直接以aside命名
 export default {
   name:"admin-index",
+  data(){
+    return{
+      isCollapse:false,
+    }
+  },
     // 2.注册组件
   components: {
-    "app-aside": Aside
+    "app-aside": Aside,
+    "app-header":Header,
+  },
+  methods:{
+       changeCollapse(){
+            this.isCollapse = !this.isCollapse;
+        }
   }
 };
 </script>
@@ -34,12 +52,8 @@ export default {
   top: 0;
   bottom: 0;
 }
-.el-header,
-.el-footer {
-  background-color: #b3c0d1;
+.el-header{
   color: #333;
-  text-align: center;
-  line-height: 60px;
 }
 
 .el-aside {
@@ -71,10 +85,8 @@ export default {
 }
 .logo{
   height:60px;
-  line-height: 60px;
   background-color: #495058;
   color:#fff;
-  text-align: center;
-  font-size:20px;
+
 }
 </style>
