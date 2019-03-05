@@ -5,7 +5,7 @@
         <router-link to="goods-add">
           <el-button plain>新增</el-button>
         </router-link>
-        <el-button plain @click="handleDelete(selectedRows)">删除</el-button>
+        <el-button plain @click="handleDelete(idsStr)">删除</el-button>
       </div>
       <div class="inputWidth">
         <el-input placeholder="请输入内容" v-model="searchvalue" class="input-with-select">
@@ -35,11 +35,15 @@
           </template>
         </el-table-column>
         <el-table-column prop="categoryname" label="类型" width="120"></el-table-column>
-        <el-table-column prop="market_price" label="价格" show-overflow-tooltip></el-table-column>
+        <el-table-column label="价格" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>￥{{scope.row.market_price | tofixed}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="right">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete([scope.row])">删除</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,7 +72,7 @@ export default {
       pageSize: 5,
       totalCount: 0,
       tableData: [],
-      selectedRows: []
+      idsStr:"",
     };
   },
   methods: {
@@ -78,58 +82,62 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageIndex = val;
-       this.getList();
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
       this.getList();
+    },
+    handleSelectionChange(data) {
+      const ids = data.map(v=>{
+        return v.id
+      })
+      const idsStr = ids.join(",");
+      this.idsStr=idsStr;
+   
     },
     handleEdit(val) {
       this.$router.push({ name: "goods-edit", params: { id: val.id } });
     },
-    handleDelete(list = []) {
-      if (list.length === 0) {
-        return;
-      }
-      const arr = list.map(v => {
-        return v.id;
-      });
+    handleDelete(ids) {
       this.$axios({
         method: "GET",
-        url: `http://127.0.0.1:8899/admin/goods/del/${arr.join(",")}`
+        url: `http://127.0.0.1:8899/admin/goods/del/${ids}`
       }).then(res => {
-        console.log(res);
-        const { message } = res.data;
+        const { message,status } = res.data;
         this.$message({
-          message,
+          message: message,
           type: "success"
         });
         this.getList();
       });
     },
     getList() {
-      console.log("123");
+    
       this.$axios({
         method: "GET",
-        url: `http://127.0.0.1:8899/admin/goods/getlist`,
-        params: {
-          pageIndex: this.pageIndex,
-          pageSize: this.pageSize
-          // searchvalue: this.searchvalue
-        }
+        url: `http://127.0.0.1:8899/admin/goods/getlist?pageIndex=${
+          this.pageIndex
+        }&pageSize=${this.pageSize}&searchValue=${this.searchValue}`
+        // params: {
+        //   pageIndex: this.pageIndex,
+        //   pageSize: this.pageSize,
+        //   searchvalue: this.searchvalue
+        // }
       }).then(res => {
         console.log(res);
-        const { message, pageIndex, pageSize, totalcount } = res.data;
-        this.tableData = message;
-        this.pageIndex = pageIndex;
-        this.pageSize = pageSize;
-        this.totalCount = totalcount;
+        const { data } = res;
+        this.tableData = data.message;
+        this.pageIndex = data.pageIndex;
+        this.pageSize = data.pageSize;
+        this.totalCount = data.totalcount;
       });
     }
   },
   mounted() {
     console.log("345");
     this.getList();
+  },
+  filters: {
+    tofixed: function(data) {
+      return Number(data).toFixed(2);
+    }
   }
 };
 </script>
