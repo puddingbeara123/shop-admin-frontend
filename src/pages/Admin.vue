@@ -12,7 +12,10 @@
           <!-- 插入头部栏 -->
           <app-header @onChange="changeCollapse"></app-header>
         </el-header>
-        <el-main>
+        <el-main> 
+          <!-- 插入面包导航 -->
+          <app-bread :dataSource="breadcrumb">
+          </app-bread> 
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -23,7 +26,8 @@
 <script>
 // 引入组件
 import Aside from "../components/Aside";
-import Header from "../components/Header"
+import Header from "../components/Header";
+import Bread from "../components/BreadCrumb"
 // 原生h5标签有aside，不能直接以aside命名
 export default {
   name:"admin-index",
@@ -36,11 +40,26 @@ export default {
   components: {
     "app-aside": Aside,
     "app-header":Header,
+    "app-bread":Bread,
   },
   methods:{
        changeCollapse(){
             this.isCollapse = !this.isCollapse;
         }
+  },
+  computed:{
+    breadcrumb(){
+    const {matched} = this.$route;
+   return matched.map(v=>{
+     return{
+       name:v.meta,
+       path:v.path
+     }
+   })
+
+
+    }
+    
   }
 };
 </script>
@@ -67,7 +86,7 @@ export default {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
-  line-height: 160px;
+  line-height: 30px;
 }
 
 .el-container {
@@ -85,7 +104,7 @@ export default {
 }
 .logo{
   height:60px;
-  background-color: #495058;
+  background-color: #002140;
   color:#fff;
 
 }

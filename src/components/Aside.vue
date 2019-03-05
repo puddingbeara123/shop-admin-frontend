@@ -7,9 +7,9 @@
     default-active="1-1"
     class="el-menu-vertical-demo"
     :collapse="isCollapse" 
-    background-color="#545c64"
-    text-color="#fff"
-    active-text-color="#ffd04b"
+    background-color="#001529"
+    text-color="#999"
+    active-text-color="#eee"
   >
     <el-submenu v-for="(item, index) in menus" :key="index" :index="`${index}+1`">
       <template slot="title">
@@ -65,12 +65,16 @@ export default {
   flex: 1;
   border-right: none;
 }
-.el-menu-item-group__title {
+ .el-menu-item-group__title {
   display: none;
-}
+} 
 .el-menu-vertical-demo a{
-  	color:inherit;
+  	 color:inherit; 
     text-decoration: none;
+}
+
+.el-menu-item .is-active{
+ background-color: #000c17;
 }
 
 </style>
