@@ -64,7 +64,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .container {
   position: fixed;
   width: 100%;
@@ -106,6 +106,6 @@ export default {
   height:60px;
   background-color: #002140;
   color:#fff;
-
 }
+
 </style>

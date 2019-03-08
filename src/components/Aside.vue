@@ -43,12 +43,12 @@ export default {
         {
           icon: "el-icon-service",
           title: "会员管理",
-          group: [{ src: "/admin/category-list", title: "会员列表" }]
+          group: [{ src: "/admin/account-list", title: "会员列表" }]
         },
         {
           icon: "el-icon-goods",
           title: "订单管理",
-          group: [{ src: "#", title: "订单列表" }]
+          group: [{ src: "/admin/orderManager", title: "订单列表" }]
         }
       ]
     };

@@ -8,21 +8,21 @@
         <el-button plain @click="handleDelete(idsStr)">删除</el-button>
       </div>
       <div class="inputWidth">
-        <el-input placeholder="请输入内容" v-model="searchvalue" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入内容" v-model="searchValue" @keyup.enter="handelSearch()" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="handelSearch" ></el-button>.
         </el-input>
       </div>
     </div>
     <div class="table-list">
       <el-table
-        ref="multipleTable"
+     
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="标题">
+        <el-table-column label="标题" width="400" align="center">
           <template slot-scope="scope">
             <router-link to="/">
               <div class="goods-info">
@@ -34,13 +34,13 @@
             </router-link>
           </template>
         </el-table-column>
-        <el-table-column prop="categoryname" label="类型" width="120"></el-table-column>
-        <el-table-column label="价格" show-overflow-tooltip>
+        <el-table-column prop="categoryname" label="类型" width="150" align="center"></el-table-column>
+        <el-table-column label="价格" align="center" show-overflow-tooltip>
           <template slot-scope="scope">
             <span>￥{{scope.row.market_price | tofixed}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="right">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
@@ -53,7 +53,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="pageIndex"
-        :page-sizes="[5, 10, 15, 20]"
+        :page-sizes="[4, 8, 12, 16]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalCount"
@@ -67,15 +67,20 @@
 export default {
   data() {
     return {
-      searchvalue: "",
+      searchValue: "",
       pageIndex: 1,
-      pageSize: 5,
+      pageSize: 4,
       totalCount: 0,
       tableData: [],
       idsStr:"",
+      id:"",
     };
   },
   methods: {
+    handelSearch(){
+     this.pageIndex=1;
+     this.getList();
+    },
     handleSizeChange(val) {
       this.pageSize = val;
       this.getList();
@@ -93,7 +98,9 @@ export default {
    
     },
     handleEdit(val) {
-      this.$router.push({ name: "goods-edit", params: { id: val.id } });
+      console.log(val);
+      const id=val.id;
+      this.$router.push(`/admin/goods-edit/${id}`);
     },
     handleDelete(ids) {
       this.$axios({
@@ -114,14 +121,14 @@ export default {
         method: "GET",
         url: `http://127.0.0.1:8899/admin/goods/getlist?pageIndex=${
           this.pageIndex
-        }&pageSize=${this.pageSize}&searchValue=${this.searchValue}`
+        }&pageSize=${this.pageSize}&searchvalue=${this.searchValue}`
         // params: {
         //   pageIndex: this.pageIndex,
         //   pageSize: this.pageSize,
         //   searchvalue: this.searchvalue
         // }
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         const { data } = res;
         this.tableData = data.message;
         this.pageIndex = data.pageIndex;
@@ -131,7 +138,7 @@ export default {
     }
   },
   mounted() {
-    console.log("345");
+   
     this.getList();
   },
   filters: {
@@ -142,7 +149,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped >
 .form-control {
   display: flex;
   justify-content: space-between;

@@ -15,13 +15,17 @@ import Admin from "./pages/Admin";
 // 商品列表
 import GoodsList from "./pages/goods/GoodsList";
 import GoodsAdd from "./pages/goods/GoodAdd"
+import GoodsEdit from "./pages/goods/GoodsEdit"
 import CategoryList from "./pages/category/CategoryList";
+import CategoryAdd from "./pages/category/CategoryAdd";
+import AccountList from "./pages/Account/AccountList";
+import OrderManager from "./pages/Order/OrderManager";
 
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 
-// axios.defaults.baseURL = "http://127.0.0.1:8899";
+
 // Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false;
@@ -33,7 +37,11 @@ const routes =[
   { path:"/admin",component:Admin,meta:"管理后台",redirect:"/admin/goods-list",children:[
     {path:"goods-list",component: GoodsList,meta:"商品列表"},
     {path:"goods-add",component: GoodsAdd,meta:"添加商品"},
-    {path:"category-list",component:CategoryList,meta:"栏目列表"}
+    {path:"goods-edit/:id",component: GoodsEdit,meta:"添加商品"},
+    {path:"category-list",component:CategoryList,meta:"栏目列表"},
+    {path:"category-add",component:CategoryAdd,meta:"新增栏目"},
+    {path:"account-list",component:AccountList,meta:"会员列表"},
+    {path:"orderManager",component:OrderManager,meta:"订单管理"},
   ]},
 
 ]
@@ -42,6 +50,7 @@ const router = new VueRouter({
   routes
 })
 // 2.把axios绑定到vue实例的属性$axios
+ axios.defaults.baseURL = "http://127.0.0.1:8899";
 Vue.prototype.$axios = axios;
 
 new Vue({
