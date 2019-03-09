@@ -10,7 +10,7 @@
         ></el-option>
       </el-select>
 
-      <el-input placeholder="请输入内容"  v-model="searchValue" class="input-with-select searchR">
+      <el-input placeholder="会员名称"  v-model="searchValue" class="input-with-select searchR">
         <el-button slot="append" icon="el-icon-search" @click="handelSearch" ></el-button>
       </el-input>
     </div>
@@ -24,8 +24,8 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleCheck(scope.row)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -62,6 +62,8 @@ export default {
       orderstatus: 0,
       searchValue: "",
       statusPayment:"",
+      orderid:"",
+      
       // vipname: "vanyb",
       options: [
         {
@@ -93,13 +95,17 @@ export default {
         getOrder();
     },
     hanleStatusChange() {
-      this.orderstatus = val;
+      console.log(this.options.value);
+      this.orderstatus = this.options.value;
       getOrder();
     },
-    handleEdit(index, row) {
-      console.log(index, row);
+    handleEdit(row) {
+      console.log(row)
+       const orderid=row.id;
+       this.$router.push(`/admin/order-edit/${orderid}`);
+    
     },
-    handleDelete(index, row) {
+    handleCheck(index, row) {
       console.log(index, row);
     },
     handleSizeChange(val) {

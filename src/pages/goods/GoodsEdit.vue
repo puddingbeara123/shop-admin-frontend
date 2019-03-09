@@ -13,7 +13,7 @@
               v-for="(subItem,subIndex) in categorys"
               v-if="subItem.parent_id === item.category_id"
               :key="subIndex"
-              :label="subItem.title"
+              :label="`${subItem.category_id} ${subItem.title}`"
               :value="subItem.category_id"
             ></el-option>
           </el-option-group>
@@ -58,7 +58,9 @@
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
+          :file-list="form.imgList"
         >
+           <!-- 封面图片:file-list 是用来存值  img属性是用来预览 -->
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
@@ -87,7 +89,9 @@
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
           :on-success="handleFileList"
+          :file-list="form.fileList"
         >
+        <!-- 图片墙:file-list 是用来存值和预览 -->
           <i class="el-icon-plus"></i>
         </el-upload>
       </el-form-item>
@@ -130,13 +134,7 @@ export default {
         is_top: false,
         is_hot: false,
         imgList: [],
-        fileList: [{
-          name:"",
-          shorturl:"",
-          uid:"",
-          url:"",
-          }
-        ],
+        fileList: [],
         category_id: "",
         content: "",
         title: "",
@@ -157,9 +155,29 @@ export default {
       dialogVisible: false
     };
   },
+ 
   methods: {
     onSubmit() {
-      console.log("123");
+      console.log(this.id.id);
+      this.$axios({
+        method:"POST",
+        url:`/admin/goods/edit/${this.id.id}`,
+        data:this.form,
+        // 处理跨域
+        withCredentials: true,
+      }).then(res=>{
+        const {message ,status}=res.data;
+        if(status==0){
+          this.$message({
+                    message: message,
+                    type: 'success'
+            });
+            setTimeout(()=>{
+              this.$router.replace("/admin/goods-list");
+            },1000)
+        }
+      })
+
     },
     handleFileList(res) {
     //   console.log(res);
@@ -182,7 +200,18 @@ export default {
     },
     // 移除选中的图片
     handleRemove(file, fileList) {
-    //   console.log(file, fileList);
+        console.log(fileList);
+
+    if(fileList.length>=1){
+       this.form.fileList= fileList;
+    }else if(fileList.length===0){
+         this.$message({
+          message: '至少保留一张图片',
+          type: 'warning'
+        });
+        return;
+    }
+    
     },
     // 点击预览图片
     handlePictureCardPreview(file) {
@@ -200,33 +229,23 @@ export default {
     }).then(res => {
       console.log(res);
       const {message} = res.data;
-      this.form={
-        ...this.form,
-        ...message,
-        // fileList:message.fileList.map(v => {
-        //   return{
-        //     ...v,
-        //     url:"http://127.0.0.1:8899"+v.shorturl
-        //   }
-        // })
-        
-      }
-    //  const Url=message.fileList[0].shorturl;
-    //   console.log(Url);
-
-      message.fileList.map(v=>{
-         const  url=`http://127.0.0.1:8899${v.shorturl}`;
-          // console.log(url);
-           message.fileList.push(url);
-          
-            return message.fileList
-
-         
-      })
-      
-     this.fileList.url=[value]= message.fileList;
-     console.log( this.fileList);
+      this.form = message;
       this.imageUrl = message.imgList[0].url;
+      this.form.fileList = message.fileList.map(v=>{
+        return {
+          ...v,
+          url:`http://localhost:8899` + v.shorturl
+        }
+      })
+    });
+     this.$axios({
+      method: "GET",
+      url: "admin/category/getlist/goods"
+    }).then(res => {
+      console.log(res);
+      const { message } = res.data;
+      // console.log(res.data);
+      this.categorys = message;
     });
   }
 };
