@@ -18,9 +18,11 @@ import GoodsAdd from "./pages/goods/GoodAdd"
 import GoodsEdit from "./pages/goods/GoodsEdit"
 import CategoryList from "./pages/category/CategoryList";
 import CategoryAdd from "./pages/category/CategoryAdd";
+import CategoryEdit from "./pages/category/CategoryEdit";
 import AccountList from "./pages/Account/AccountList";
 import OrderManager from "./pages/Order/OrderManager";
 import OrderEdit from "./pages/Order/OrderEdit";
+import OrderDetail from "./pages/Order/OrderDetail";
 //因为vue的语法，所以可以忽略.vue后缀名
 
 // 引入vuex仓库
@@ -39,15 +41,17 @@ Vue.config.productionTip = false;
 const routes =[
   {path:"/",redirect:"/admin"},
   {path:"/login",component:Longin,meta:"登录页" },
-  { path:"/admin",component:Admin,meta:"管理后台",redirect:"/admin/goods-list",children:[
+  {path:"/admin",component:Admin,meta:"管理后台",redirect:"/admin/goods-list",children:[
     {path:"goods-list",component: GoodsList,meta:"商品列表"},
     {path:"goods-add",component: GoodsAdd,meta:"添加商品"},
     {path:"goods-edit/:id",component: GoodsEdit,meta:"添加商品"},
     {path:"category-list",component:CategoryList,meta:"栏目列表"},
     {path:"category-add",component:CategoryAdd,meta:"新增栏目"},
+    {path:"category-edit/:id",component:CategoryEdit,meta:"栏目编辑"},
     {path:"account-list",component:AccountList,meta:"会员列表"},
     {path:"orderManager",component:OrderManager,meta:"订单管理"},
     {path:"order-edit/:id",component:OrderEdit,meta:"订单编辑"},
+    {path:"order-detail/:id",component:OrderDetail,meta:"订单查看"},
   ]},
 
 ]

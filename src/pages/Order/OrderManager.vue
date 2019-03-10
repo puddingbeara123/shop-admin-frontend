@@ -100,13 +100,16 @@ export default {
       getOrder();
     },
     handleEdit(row) {
-      console.log(row)
+      // console.log(row)
        const orderid=row.id;
        this.$router.push(`/admin/order-edit/${orderid}`);
     
     },
-    handleCheck(index, row) {
-      console.log(index, row);
+    handleCheck(row) {
+      console.log( row);
+      const orderid=row.id;
+      this.$router.push(`/admin/order-detail/${orderid}`)
+
     },
     handleSizeChange(val) {
       this.pageSize = val;

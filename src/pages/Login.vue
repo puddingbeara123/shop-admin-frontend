@@ -31,20 +31,25 @@ export default {
   methods: {
     submitForm(formName) {
 
-      this.$axios({
-         url:"/admin/account/login",
-         method:"POST",
-         data:this.formData,
-        withCredentials: true,
-      }).then(res => {
-        const{status,message}=res.data;
+      // this.$axios({
+      //    url:"/admin/account/login",
+      //    method:"POST",
+      //    data:this.formData,
+      //   withCredentials: true,
+      // }).then(res => {
+      //   const{status,message}=res.data;
         
-        if(status == 1){
-          this.$message.error(message);
-        }else{
-          this.$router.back()
-        }
-      })
+      //   if(status == 1){
+      //     this.$message.error(message);
+      //   }else{
+      //     this.$router.back()
+      //   }
+      // })
+
+      // user/是命名空间
+      this.$store.dispatch("user/login",this.formData).then(res =>{
+        this.$router.back();
+      });
     },
     resetForm(formName) {
     

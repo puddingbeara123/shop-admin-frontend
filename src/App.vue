@@ -10,11 +10,12 @@ export default {
  mounted(){
    this.$axios({
      url:"/admin/account/islogin",
+     withCredentials: true, //一定要加跨域，这样后台才能记住已经登陆的信息
    }).then(res=>{
-    
-    //  if(res.data.code==="nologin"){
-    //  this.$router.push("/login");
-    //  }
+    console.log(res);
+     if(res.data.code==="nologin"){
+     this.$router.push("/login");
+     }
    })
  }
 };

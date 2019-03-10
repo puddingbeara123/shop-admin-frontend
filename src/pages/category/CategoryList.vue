@@ -26,7 +26,7 @@
                 <span>{{ node.label }}</span>
                 <span><el-input v-model="data.sort_id" @blur="handleEnter(data)" size="mini" ></el-input></span>
                 <span>
-                  <el-button type="text" size="mini" @click="() => append(data)">编辑</el-button>
+                  <el-button type="text" size="mini" @click="handleEdit(data)">编辑</el-button>
                 </span>
               </span>
             </el-tree>
@@ -127,8 +127,11 @@ export default {
    },
     
    
-    edit(data) {
-      console.log();
+    handleEdit(data) {
+      // console.log(data);
+      const id  = data.id
+      // console.log(id);
+      this.$router.push(`/admin/category-edit/${id}`);
     },
    
     handleToCateAdd(){
