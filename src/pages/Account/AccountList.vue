@@ -21,18 +21,15 @@
       </el-table-column>
     </el-table>
 
-    <div class="block paginator mt20">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageIndex"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount"
-        align="left"
-      ></el-pagination>
-    </div>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageIndex"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalCount"
+    ></el-pagination>
   </div>
 </template>
 
@@ -48,8 +45,7 @@ export default {
     };
   },
   methods: {
-      getAccountList() {
-      console.log(123)
+    getAccountList() {
       this.$axios({
         method: "get",
         url: `/admin/account/getlist`,
@@ -59,7 +55,6 @@ export default {
           searchvalue: this.searchvalue
         }
       }).then(res => {
-           console.log(123)
         // console.log(res);
         const { message, pageIndex, pageSize, totalcount } = res.data;
         this.tableData = message;
@@ -69,23 +64,22 @@ export default {
       });
     },
     handleSizeChange(val) {
-      console.log(val);
-      this.pageIndex = val;
-      this.pageSize = 5
-      getAccountList();
+    //  console.log(`每页 ${val} 条`);
+      this.pageSize = val; 
+      this.getAccountList();
     },
     handleCurrentChange(val) {
-      console.log(val);
-      this.pageSize = val;
-      getAccountList();
+      // console.log(`当前页: ${val}`);
+      this.pageIndex = val;
+      this.getAccountList();
     },
     handelSearch() {
-        getAccountList();
+      this.pageIndex=1;
+      this.getAccountList();
     },
     handleEdit(index, row) {
       console.log(index, row);
-    },
-  
+    }
   },
   mounted() {
     this.getAccountList();

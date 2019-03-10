@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="inputs">
-      <el-select placeholder="全部" v-model="statusPayment" class="searchL" @change="hanleStatusChange">
+      <el-select placeholder="请选择" v-model="orderstatus" class="searchL" @change="hanleStatusChange">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -10,7 +10,7 @@
         ></el-option>
       </el-select>
 
-      <el-input placeholder="会员名称"  v-model="searchValue" class="input-with-select searchR">
+      <el-input placeholder="会员名称"  v-model="searchvalue" class="input-with-select searchR">
         <el-button slot="append" icon="el-icon-search" @click="handelSearch" ></el-button>
       </el-input>
     </div>
@@ -43,6 +43,8 @@
         align="left"
       ></el-pagination>
     </div>
+
+    
   </div>
 </template>
 
@@ -60,8 +62,8 @@ export default {
       pageSize: 5,
       totalCount: 0,
       orderstatus: 0,
-      searchValue: "",
-      statusPayment:"",
+      statusValue: "",
+      searchvalue:"",
       orderid:"",
       
       // vipname: "vanyb",
@@ -92,12 +94,11 @@ export default {
   methods: {
     handelSearch(){
        this.pageIndex=1;
-        getOrder();
+        this.getOrder();
     },
     hanleStatusChange() {
-      console.log(this.options.value);
-      this.orderstatus = this.options.value;
-      getOrder();
+      // console.log(this.orderstatus);
+    this.getOrder();
     },
     handleEdit(row) {
       // console.log(row)
@@ -124,7 +125,7 @@ export default {
         .get(
           `http://localhost:8899/admin/order/getorderlist?orderstatus=${
             this.orderstatus
-          }&vipname=${this.searchValue}&pageIndex=${this.pageIndex}&pageSize=${
+          }&vipname=${this.searchvalue}&pageIndex=${this.pageIndex}&pageSize=${
             this.pageSize}`
         )
         .then(res => {

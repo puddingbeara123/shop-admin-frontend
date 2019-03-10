@@ -183,4 +183,8 @@ export default {
   display: block;
   height: 64px;
 }
+.router-link-active{
+    text-decoration: none;
+    color:black;
+}
 </style>
