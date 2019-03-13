@@ -21,6 +21,8 @@ export default {
 methods:{
   
     handleToggle:function(){
+
+      
         this.$emit("onChange");
     },
     handleLogout:function(){

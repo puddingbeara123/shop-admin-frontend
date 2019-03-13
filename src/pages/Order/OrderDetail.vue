@@ -30,14 +30,12 @@
     <el-table :data="data.goodslist" style="width: 100%">
       <el-table-column label="商品" width="400">
         <template slot-scope="scope">
-          <router-link to="/">
             <div class="goods-info" type="flex" justify="space-between">
               <div class="goods-img">
                 <img :src="scope.row.imgurl" class="imgs">
               </div>
               <p>{{scope.row.goods_title}}</p>
             </div>
-          </router-link>
         </template>
       </el-table-column>
       <el-table-column prop="goods_no" label="类型" width="180"></el-table-column>

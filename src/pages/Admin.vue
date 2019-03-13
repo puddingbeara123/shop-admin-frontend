@@ -3,6 +3,7 @@
     <el-container>
       <el-aside width="auto">
         <!-- 3.调用组件 -->
+       
         <div class="logo">Logo</div>
         <!-- 插入侧边栏 -->
         <app-aside :isCollapse="isCollapse" ></app-aside>
